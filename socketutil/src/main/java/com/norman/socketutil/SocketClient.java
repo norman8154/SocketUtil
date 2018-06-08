@@ -1,11 +1,11 @@
-package com.yutouch.socketutil;
+package com.norman.socketutil;
 
 import android.os.Handler;
 import android.util.Log;
 
-import com.yutouch.socketutil.interfaces.OnReceiveMessageListener;
-import com.yutouch.socketutil.interfaces.SendMessageCallback;
-import com.yutouch.socketutil.interfaces.SocketConnectionCallback;
+import com.norman.socketutil.interfaces.OnReceiveMessageListener;
+import com.norman.socketutil.interfaces.SendMessageCallback;
+import com.norman.socketutil.interfaces.SocketConnectionCallback;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,8 +1,8 @@
-package com.yutouch.socketutil;
+package com.norman.socketutil;
 
 import android.util.Log;
 
-import com.yutouch.socketutil.interfaces.OnReceiveMessageListener;
+import com.norman.socketutil.interfaces.OnReceiveMessageListener;
 
 import java.io.BufferedReader;
 import java.net.Socket;

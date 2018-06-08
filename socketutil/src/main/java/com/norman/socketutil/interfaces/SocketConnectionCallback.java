@@ -1,4 +1,4 @@
-package com.yutouch.socketutil.interfaces;
+package com.norman.socketutil.interfaces;
 
 /**
  * Created by Norman on 2018/6/7.

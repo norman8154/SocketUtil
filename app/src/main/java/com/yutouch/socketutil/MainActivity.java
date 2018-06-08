@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.yutouch.socketutil.interfaces.OnReceiveMessageListener;
-import com.yutouch.socketutil.interfaces.SocketConnectionCallback;
+import com.norman.socketutil.SocketClient;
+import com.norman.socketutil.SocketServer;
+import com.norman.socketutil.interfaces.OnReceiveMessageListener;
+import com.norman.socketutil.interfaces.SocketConnectionCallback;
 
 public class MainActivity extends AppCompatActivity {
     private EditText edtIP;
