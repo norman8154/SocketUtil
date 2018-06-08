@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yutouch.socketutil.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IP: "
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edt_ip"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="8dp"
+        android:id="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_ip"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/edt_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/textView"
+        android:layout_marginLeft="8dp"/>
+
+    <Button
+        android:id="@+id/btn_start_server"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Server"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/edt_ip"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_start_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:text="Start Client"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_start_server"/>
+
+    <Button
+        android:id="@+id/btn_close_server"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:text="Close Server"
+        app:layout_constraintLeft_toRightOf="@+id/btn_start_server"
+        app:layout_constraintTop_toTopOf="@+id/btn_start_server"/>
+
+    <Button
+        android:id="@+id/btn_close_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:text="Close client"
+        app:layout_constraintLeft_toRightOf="@+id/btn_start_client"
+        app:layout_constraintTop_toBottomOf="@+id/btn_close_server"/>
+
+</android.support.constraint.ConstraintLayout>
