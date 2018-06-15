@@ -159,6 +159,9 @@ public class SocketServer {
                     disconnect();
                 } catch (Exception e) {
                     e.printStackTrace();
+
+                    if (connectionCallback != null)
+                        connectionCallback.disconnected();
                 }
             }
         }).start();

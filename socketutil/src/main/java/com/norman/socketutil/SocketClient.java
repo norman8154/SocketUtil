@@ -125,6 +125,9 @@ public class SocketClient {
                         disconnect();
                     } catch (Exception e) {
                         e.printStackTrace();
+
+                        if (connectionCallback != null)
+                            connectionCallback.disconnected();
                     }
                 }
             }).start();
