@@ -10,9 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.norman.socketutil.SocketClient;
-import com.norman.socketutil.SocketServer;
-import com.norman.socketutil.interfaces.OnReceiveMessageListener;
+import com.norman.socketutil.SocketClient.SocketClient;
+import com.norman.socketutil.SocketEntity;
+import com.norman.socketutil.SocketServer.SocketServer;
+import com.norman.socketutil.SocketClient.OnReceiveMessageListener;
 import com.norman.socketutil.interfaces.SocketConnectionCallback;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 socketServer.startServer(8254);
-                socketServer.setOnReceiveMessageListener(new OnReceiveMessageListener() {
+                socketServer.setOnReceiveMessageListener(new com.norman.socketutil.SocketServer.OnReceiveMessageListener() {
                     @Override
-                    public void receiveMessage(String message) {
+                    public void receiveMessage(SocketEntity entity, String message) {
                         Log.d("Receive", message);
                     }
                 });

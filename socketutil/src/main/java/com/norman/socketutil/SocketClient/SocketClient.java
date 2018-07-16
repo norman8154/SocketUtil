@@ -1,9 +1,8 @@
-package com.norman.socketutil;
+package com.norman.socketutil.SocketClient;
 
 import android.os.Handler;
 import android.util.Log;
 
-import com.norman.socketutil.interfaces.OnReceiveMessageListener;
 import com.norman.socketutil.interfaces.SendMessageCallback;
 import com.norman.socketutil.interfaces.SocketConnectionCallback;
 

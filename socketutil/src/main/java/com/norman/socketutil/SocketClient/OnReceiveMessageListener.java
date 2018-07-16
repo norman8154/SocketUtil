@@ -1,4 +1,4 @@
-package com.norman.socketutil.interfaces;
+package com.norman.socketutil.SocketClient;
 
 /**
  * Created by Norman on 2018/6/7.

@@ -1,8 +1,10 @@
-package com.norman.socketutil;
+package com.norman.socketutil.SocketServer;
 
 import android.util.Log;
 
-import com.norman.socketutil.interfaces.OnReceiveMessageListener;
+import com.norman.socketutil.SocketEntity;
+import com.norman.socketutil.SocketServer.SocketListenThread;
+import com.norman.socketutil.SocketServer.OnReceiveMessageListener;
 import com.norman.socketutil.interfaces.SocketConnectionCallback;
 import com.norman.socketutil.interfaces.SendMessageCallback;
 
@@ -76,7 +78,46 @@ public class SocketServer {
         }).start();
     }
 
-    private boolean disconnect(SocketEntity entity){
+    public void sendMessage(final SocketEntity client, final String message){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (client != null) {
+                    try {
+                        client.getOutputStream().write(message.getBytes());
+                        client.getOutputStream().flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public void sendMessage(final SocketEntity client, final String message, final SendMessageCallback callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (client != null) {
+                    try {
+                        client.getOutputStream().write(message.getBytes());
+                        client.getOutputStream().flush();
+
+                        if (callback != null)
+                            callback.sendSuccess();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+
+                        if (callback != null)
+                            callback.sendFailed();
+                    }
+                } else if (callback != null)
+                    callback.sendFailed();
+            }
+        }).start();
+    }
+
+    public boolean disconnect(SocketEntity entity){
         if(entity != null) {
             try {
                 entity.getSocket().close();
@@ -157,7 +198,7 @@ public class SocketServer {
 
                     waitConnection();
 
-                    SocketListenThread socketListenThread = new SocketListenThread(client, br);
+                    SocketListenThread socketListenThread = new SocketListenThread(entity, br);
                     socketListenThread.setOnReceiveMessageListener(onReceiveMessageListener);
                     socketListenThread.start();
 
