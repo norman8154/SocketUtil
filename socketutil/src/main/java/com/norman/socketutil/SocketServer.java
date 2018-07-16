@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by Norman on 2018/6/7.
@@ -20,10 +21,7 @@ import java.net.Socket;
 
 public class SocketServer {
     private ServerSocket socketServer;
-    private Socket client;
-    private InputStream is;
-    private OutputStream os;
-    private BufferedReader br;
+    private ArrayList<SocketEntity> clients = new ArrayList<>();
     private SocketConnectionCallback connectionCallback;
     private OnReceiveMessageListener onReceiveMessageListener;
 
@@ -39,12 +37,14 @@ public class SocketServer {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (client != null) {
-                    try {
-                        os.write(message.getBytes());
-                        os.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                if (clients.size() > 0) {
+                    for (SocketEntity client : clients) {
+                        try {
+                            client.getOutputStream().write(message.getBytes());
+                            client.getOutputStream().flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -55,18 +55,20 @@ public class SocketServer {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (client != null) {
-                    try {
-                        os.write(message.getBytes());
-                        os.flush();
+                if (clients.size() > 0) {
+                    for (SocketEntity client : clients) {
+                        try {
+                            client.getOutputStream().write(message.getBytes());
+                            client.getOutputStream().flush();
 
-                        if (callback != null)
-                            callback.sendSuccess();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                            if (callback != null)
+                                callback.sendSuccess();
+                        } catch (IOException e) {
+                            e.printStackTrace();
 
-                        if (callback != null)
-                            callback.sendFailed();
+                            if (callback != null)
+                                callback.sendFailed();
+                        }
                     }
                 } else if (callback != null)
                     callback.sendFailed();
@@ -74,19 +76,18 @@ public class SocketServer {
         }).start();
     }
 
-    public boolean disconnect(){
-        if(client != null) {
+    private boolean disconnect(SocketEntity entity){
+        if(entity != null) {
             try {
-                client.close();
-                client = null;
-                is.close();
-                os.close();
-                br.close();
+                entity.getSocket().close();
+                entity.getInputStream().close();
+                entity.getOutputStream().close();
+                entity.getBufferedReader().close();
 
                 if (connectionCallback != null)
                     connectionCallback.disconnected();
 
-                waitConnection();
+                //waitConnection();
 
                 return true;
             } catch (IOException e) {
@@ -103,12 +104,13 @@ public class SocketServer {
                 socketServer.close();
                 socketServer = null;
 
-                if (client != null) {
-                    client.close();
-                    client = null;
-                    is.close();
-                    os.close();
-                    br.close();
+                for (SocketEntity client : clients) {
+                    if (client != null) {
+                        client.getSocket().close();
+                        client.getInputStream().close();
+                        client.getOutputStream().close();
+                        client.getBufferedReader().close();
+                    }
                 }
 
                 return true;
@@ -140,14 +142,20 @@ public class SocketServer {
             @Override
             public void run() {
                 try {
-                    client = socketServer.accept();
+                    Socket client = socketServer.accept();
+                    InputStream is = client.getInputStream();
+                    OutputStream os = client.getOutputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                    SocketEntity entity = new SocketEntity(client, is, os, br);
 
-                    is = client.getInputStream();
-                    os = client.getOutputStream();
-                    br = new BufferedReader(new InputStreamReader(is));
+                    Log.d("Client Accepted", "Total client " + clients.size());
+
+                    clients.add(entity);
 
                     if (connectionCallback != null)
                         connectionCallback.connected();
+
+                    waitConnection();
 
                     SocketListenThread socketListenThread = new SocketListenThread(client, br);
                     socketListenThread.setOnReceiveMessageListener(onReceiveMessageListener);
@@ -156,7 +164,8 @@ public class SocketServer {
                     socketListenThread.join();
                     Log.d("Socket Server", "Connection end");
 
-                    disconnect();
+                    clients.remove(entity);
+                    disconnect(entity);
                 } catch (Exception e) {
                     e.printStackTrace();
 
