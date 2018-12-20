@@ -172,6 +172,10 @@ public class SocketServer {
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
+
+                if (connectionCallback != null)
+                    connectionCallback.connectFailed();
+
                 return false;
             }
         } else
@@ -189,9 +193,9 @@ public class SocketServer {
                     BufferedReader br = new BufferedReader(new InputStreamReader(is));
                     SocketEntity entity = new SocketEntity(client, is, os, br);
 
-                    Log.d("Client Accepted", "Total client " + clients.size());
-
                     clients.add(entity);
+
+                    Log.d("Client Accepted", "Total client " + clients.size());
 
                     if (connectionCallback != null)
                         connectionCallback.connected();

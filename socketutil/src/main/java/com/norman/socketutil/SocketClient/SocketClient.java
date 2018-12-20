@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * Created by Norman on 2018/6/7.
@@ -25,6 +27,7 @@ public class SocketClient {
     private SocketConnectionCallback connectionCallback;
     private OnReceiveMessageListener onReceiveMessageListener;
     private Handler handler;
+    private int timeout;
 
     public SocketClient() {
         this.handler = new Handler();
@@ -36,6 +39,10 @@ public class SocketClient {
 
     public void setOnReceiveMessageListener(OnReceiveMessageListener onReceiveMessageListener) {
         this.onReceiveMessageListener = onReceiveMessageListener;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
     public void sendMessage(final String message) {
@@ -105,7 +112,8 @@ public class SocketClient {
                 @Override
                 public void run() {
                     try {
-                        socket = new Socket(ip, port);
+                        socket = new Socket();
+                        socket.connect(new InetSocketAddress(ip, port), timeout * 1000);
 
                         is = socket.getInputStream();
                         os = socket.getOutputStream();
@@ -126,7 +134,7 @@ public class SocketClient {
                         e.printStackTrace();
 
                         if (connectionCallback != null)
-                            connectionCallback.disconnected();
+                            connectionCallback.connectFailed();
                     }
                 }
             }).start();

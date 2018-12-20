@@ -18,7 +18,7 @@ import com.norman.socketutil.interfaces.SocketConnectionCallback;
 
 public class MainActivity extends AppCompatActivity {
     private EditText edtIP;
-    private Button btnStartServer, btnCloseServer, btnStartClient, btnCloseClient;
+    private Button btnStartServer, btnCloseServer, btnStartClient, btnCloseClient, btnSendMessage;
     private SocketServer socketServer;
     private SocketClient socketClient;
 
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         btnCloseServer = (Button) findViewById(R.id.btn_close_server);
         btnStartClient = (Button) findViewById(R.id.btn_start_client);
         btnCloseClient = (Button) findViewById(R.id.btn_close_client);
+        btnSendMessage = (Button) findViewById(R.id.btn_send_message);
 
         socketServer = new SocketServer();
         socketClient = new SocketClient();
@@ -67,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Disconnected to client", Toast.LENGTH_SHORT).show();
                             }
                         });
+                    }
+
+                    @Override
+                    public void connectFailed() {
+
                     }
 
                     @Override
@@ -123,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
+                    public void connectFailed() {
+
+                    }
+
+                    @Override
                     public void alreadyConnected() {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -139,6 +150,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 socketClient.disconnect();
+            }
+        });
+
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                socketClient.sendMessage("123");
             }
         });
     }

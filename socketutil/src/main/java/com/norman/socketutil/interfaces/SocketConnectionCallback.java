@@ -7,5 +7,6 @@ package com.norman.socketutil.interfaces;
 public interface SocketConnectionCallback {
     void connected();
     void disconnected();
+    void connectFailed();
     void alreadyConnected();
 }
