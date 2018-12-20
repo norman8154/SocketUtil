@@ -27,7 +27,7 @@ public class SocketClient {
     private SocketConnectionCallback connectionCallback;
     private OnReceiveMessageListener onReceiveMessageListener;
     private Handler handler;
-    private int timeout;
+    private int timeout = 30;
 
     public SocketClient() {
         this.handler = new Handler();
