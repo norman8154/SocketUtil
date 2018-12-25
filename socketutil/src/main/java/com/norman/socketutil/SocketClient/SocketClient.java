@@ -49,7 +49,7 @@ public class SocketClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (socket != null) {
+                if (socket != null && socket.isConnected()) {
                     try {
                         os.write(message.getBytes());
                         os.flush();
@@ -65,7 +65,7 @@ public class SocketClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (socket != null) {
+                if (socket != null && socket.isConnected()) {
                     try {
                         os.write(message.getBytes());
                         os.flush();
