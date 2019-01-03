@@ -38,14 +38,16 @@ public class SocketListenThread extends Thread {
                 final String message = br.readLine();
                 Log.d("Socket service", "Receive: " + message);
 
-                switch (message){
-                    case "close":
-                        socket.close();
-                        break;
+                if (message != null) {
+                    switch (message){
+                        case "close":
+                            socket.close();
+                            break;
 
-                    default:
-                        onReceiveMessageListener.receiveMessage(client, message);
-                        break;
+                        default:
+                            onReceiveMessageListener.receiveMessage(client, message);
+                            break;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
