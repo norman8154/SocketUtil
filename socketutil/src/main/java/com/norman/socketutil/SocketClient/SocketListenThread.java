@@ -43,6 +43,9 @@ public class SocketListenThread extends Thread {
                             onReceiveMessageListener.receiveMessage(message);
                             break;
                     }
+                } else {
+                    socket.close();
+                    break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
