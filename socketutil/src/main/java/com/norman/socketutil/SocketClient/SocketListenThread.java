@@ -44,7 +44,6 @@ public class SocketListenThread extends Thread {
                             break;
                     }
                 } else {
-                    socket.close();
                     break;
                 }
             } catch (Exception e) {

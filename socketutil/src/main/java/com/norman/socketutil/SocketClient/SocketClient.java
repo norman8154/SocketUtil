@@ -87,7 +87,7 @@ public class SocketClient {
     public boolean disconnect(){
         if (socket != null && socket.isConnected()) {
             try {
-                sendMessage("{\"Action\":\"Close\"}");
+                sendMessage("{\"Action\":\"Close\"}\n");
                 socket.close();
                 socket = null;
                 is.close();
